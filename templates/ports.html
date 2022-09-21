@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+  {% load static %}
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css'
+    crossorigin="anonymous">
+  <link href="{% static 'css/style.css' %}" type="text/css" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/b5bc6a9427.js" crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  <title>{% block title %}Ports{% endblock %}</title>
+</head>
+
+<body>
+
+{% if messages %}
+<div class="ctrl-panel2">
+  <h3> Something Went Wrong </h3>
+  {% for message in messages %}
+  {{ message }}
+  {% endfor %}
+</div>
+{% endif %}
+
+<div class="container">
+  <div class="btn-toolbar" role="toolbar">
+    <div class="btn-group btn-group-lg btn-group-justified btn-group-fill-height">
+      <button type="button" class="btn btn-default port-reg-button" data-bs-toggle="modal"
+        data-bs-target="#exampleModal" data-bs-whatever=""> <strong>Add new port</strong>
+        <span>Same page</span> </button>
+      <a href="{% url 'add_port_page' %}" class="btn btn-success port-reg-button" role="button">
+        <strong>Add new port</strong>
+        <span>Other page</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add New port</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        {% if messages %}
+        {% for message in messages %}
+        {{ message }}
+        {% endfor %}
+        {% endif %}
+        <form action="/add_port" method="post">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="id_name" class="col-form-label">Name:</label>
+            <input type="text" class="form-control" name="name" maxlength="50" required="" id="id_name"
+              value="{{ port_form.name }}">
+          </div>
+          <label for="id_temp" class="col-form-label">Temp:</label>
+          <div class="input-group mb-3">
+            <input type="number" class="form-control" name="temp" maxlength="10" required="" id="id_temp"
+              value="{{ port_form.temp }}">
+          </div>
+          <div class="mb-3">
+            <label for="id_latitude" class="col-form-label">Latitude:</label>
+            <input type="number" class="form-control" name="latitude" maxlength="10" required="" id="id_latitude"
+              value="{{ port_form.latitude }}">
+          </div>
+          <div class="mb-3">
+            <label for="id_longitude" class="col-form-label">Longitude:</label>
+            <input type="number" class="form-control" name="longitude" maxlength="10" required="" id="id_longitude"
+              value="{{ port_form.longitude }}">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary" value="Submit">Submit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<table class="table port-table" id="port-table">
+  <thead>
+    <tr>
+      <th scope="col"><span class="table-column"> Port Name <i class="caret"></span></th>
+      <th scope="col"><span class="table-column"> Temperature <i class="caret"></span></th>
+      <th scope="col"><span class="table-column"> Latitude <i class="caret"></span></th>
+      <th scope="col"><span class="table-column"> Longitude <i class="caret"></span></th>
+      <th scope="col"><span class="table-column"> Date <i class="caret"></span></th>
+    </tr>
+  </thead>
+  <tbody id="port-table-body">
+    {% for port in ports %}
+    <tr>
+      <th scope="row">{{ port.name }}</th>
+      <td>{{ port.temp }}</td>
+      <td>{{ port.latitude }}</td>
+      <td>{{ port.longitude }}</td>
+      <td>{{ port.date }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% load static %}
+<script src="{% static 'script/port-table-script.js' %}"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+crossorigin="anonymous"></script>
+
+{% block script %}
+
+{% endblock %}
+
+<!-- <script type="text/javascript">window.$crisp = []; window.CRISP_WEBSITE_ID = "";
+(function () {
+  d = document; s = d.createElement("script");
+  s.src = "https://client.crisp.chat/l.js"; s.async = 1;
+  d.getElementsByTagName("head")[0].appendChild(s);
+})();
+</script> -->
+
+</body>
+
+</html>

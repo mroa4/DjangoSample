@@ -21,4 +21,18 @@
 
 6. python manage.py migrate
 
+7. add ports.apps.PortsConfig to installed
 
+8. create db model for ports
+
+9. python manage.py makemigrations ports
+
+10. python manage.py sqlmigrate polls 0001 OR python manage.py migrate
+
+11. add urls, views and templates
+
+12. python manage.py createsuperuser
+
+13. python manage.py runserver
+
+14. X
