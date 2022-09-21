@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+  {% load static %}
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css'
+    crossorigin="anonymous">
+  <link href="{% static 'css/style.css' %}" type="text/css" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/b5bc6a9427.js" crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  <title>{% block title %}Ports{% endblock %}</title>
+</head>
+
+<body>
+    {% if messages %}
+    <div class="ctrl-panel2">
+      <h3> Something Went Wrong </h3>
+      {% for message in messages %}
+      {{ message }}
+      {% endfor %}
+    </div>
+    {% endif %}
+
+<form action="{% url 'upload_csv_page' %}" method="POST" enctype="multipart/form-data" class="form-horizontal"> 
+    {% csrf_token %}
+    <div class="form-group row" style="margin:30px;">
+        <label for="name" class="col-md-3 col-sm-3 col-xs-12 control-label">Upload a CSV file (note: Correct ports will be added to DB): </label>
+        <div class="col-md-8">
+            <input type="file" name="csv_file" id="csv_file" required="True" class="form-control">
+        </div>                    
+    </div>
+    <div class="form-group row" style="margin:auto;">                    
+        <div class="col-md-3 col-sm-3 col-xs-12 col-md-offset-3" style="margin-bottom:10px;">
+             <button class="btn btn-primary"> <span class="glyphicon glyphicon-upload" style="margin-right:5px;"></span>Upload </button>
+             <a href="/" class="btn btn-primary">Back</a>
+        </div> 
+    </div>
+    </form>
+
+
+{% load static %}
+<script src="{% static 'script/port-table-script.js' %}"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+crossorigin="anonymous"></script>
+
+{% block script %}
+
+{% endblock %}
+
+<!-- <script type="text/javascript">window.$crisp = []; window.CRISP_WEBSITE_ID = "";
+(function () {
+    d = document; s = d.createElement("script");
+    s.src = "https://client.crisp.chat/l.js"; s.async = 1;
+    d.getElementsByTagName("head")[0].appendChild(s);
+})();
+</script> -->
+
+</body>
+
+</html>

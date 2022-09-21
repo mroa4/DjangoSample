@@ -97,20 +97,26 @@ function populateTable() {
 
   for (let data of tableData) {
     let row = table_body.insertRow(-1);
-    let name = row.insertCell(0);
-    name.outerHTML = "<th>" + data.portname + "</th>";
+    
+    let pid = row.insertCell(0);
+    pid.outerHTML = "<th>" + data.pid + "</th>";
 
-    let temperature = row.insertCell(1);
+    let name = row.insertCell(1);
+    name.innerHTML = data.portname;
+
+    let temperature = row.insertCell(2);
     temperature.innerHTML = data.temperature;
 
-    let latitude = row.insertCell(2);
+    let latitude = row.insertCell(3);
     latitude.innerHTML = data.latitude;
 
-    let longitude = row.insertCell(3);
+    let longitude = row.insertCell(4);
     longitude.innerHTML = data.longitude;
 
-    let date = row.insertCell(4);
+    let date = row.insertCell(5);
     date.innerHTML = data.date;
+  
+
 
     // let action = row.insertCell(5);
     // action.innerHTML = data.action;

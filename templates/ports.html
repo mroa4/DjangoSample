@@ -28,6 +28,10 @@
 <div class="container">
   <div class="btn-toolbar" role="toolbar">
     <div class="btn-group btn-group-lg btn-group-justified btn-group-fill-height">
+      <a href="{% url 'upload_csv_page' %}" class="btn btn-success port-reg-button" role="button">
+        <strong>Upload CSV</strong>
+        <span>Other page</span>
+      </a>
       <button type="button" class="btn btn-default port-reg-button" data-bs-toggle="modal"
         data-bs-target="#exampleModal" data-bs-whatever=""> <strong>Add new port</strong>
         <span>Same page</span> </button>
@@ -89,6 +93,7 @@
 <table class="table port-table" id="port-table">
   <thead>
     <tr>
+      <th scope="col"><span class="table-column"> PID <i class="caret"></span></th>
       <th scope="col"><span class="table-column"> Port Name <i class="caret"></span></th>
       <th scope="col"><span class="table-column"> Temperature <i class="caret"></span></th>
       <th scope="col"><span class="table-column"> Latitude <i class="caret"></span></th>
@@ -99,7 +104,8 @@
   <tbody id="port-table-body">
     {% for port in ports %}
     <tr>
-      <th scope="row">{{ port.name }}</th>
+      <th scope="row">{{ port.id }}</th>
+      <td>{{ port.name }}</td>
       <td>{{ port.temp }}</td>
       <td>{{ port.latitude }}</td>
       <td>{{ port.longitude }}</td>
