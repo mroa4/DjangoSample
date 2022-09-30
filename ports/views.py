@@ -1,5 +1,4 @@
 from distutils.log import error
-import imp
 from logging import exception
 from django.shortcuts import render, redirect
 from ports.models import Port
@@ -13,7 +12,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 # Create your views here.
 
 
-def ports_view(request):
+def get_ports_view(request):
     ports = Port.objects.all()
     return render(request, 'ports.html', {
         'ports': ports
@@ -28,7 +27,7 @@ def add_port_page(request):
         if form.is_valid():
             port = form.save()
             port.save()
-            return redirect(ports_view)
+            return redirect(get_ports_view)
         else:
             messages.error(request, form.errors)
             #  TODO add error to event
@@ -94,19 +93,39 @@ def upload_csv_page(request):
     except Exception as e:
         messages.error(request,"Unable to upload file. "+repr(e))
     if fine:
-        return redirect(ports_view)
+        return redirect(get_ports_view)
     return HttpResponseRedirect(reverse("upload_csv_page"))
 
 
 
 def edit_port(request,id):
-    return redirect(ports_view)
+    port = Port.objects.get(pk=id)
+
+    if request.method == 'GET':
+            form = PortForm(instance=Port(port))
+            return render(request, template_name='edit_port.html', context={'port':port, 'port_form': form})
+    else:
+        # try:
+        form = PortForm(request.POST, instance=port)
+        if form.is_valid():
+            tform = form.save(commit=False)
+            port = form.save()
+            port.save()
+            return redirect(get_ports_view)
+        else:
+            messages.error(request, form.errors)
+            return render(request, template_name='edit_port.html', context={'port':port, 'port_form': form.data})
+        # except:
+        #     return redirect(get_ports_view)
+
+    return redirect(get_ports_view)
+
 
 
 def del_port(request,id):
     try:
         port = Port.objects.get(id=id)
         port.delete()
-        return redirect(ports_view)
+        return redirect(get_ports_view)
     except:
-        return redirect(ports_view)
+        return redirect(get_ports_view)
