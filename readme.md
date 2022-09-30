@@ -35,4 +35,4 @@
 
 13. python manage.py runserver
 
-14. X
+14. add others
