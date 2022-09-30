@@ -163,9 +163,9 @@ for (let column of tableColumns) {
   });
 }
 
-search_input.addEventListener('keyup', function (event) {
-  filterTable();
-});
+// search_input.addEventListener('keyup', function (event) {
+//   filterTable();
+// });
 
 
 $(document).ready(function(){
@@ -178,4 +178,18 @@ $(document).ready(function () {
       $(this).html('<input type="text" placeholder="Search ' + title + '" />');
   });
 
+  var table = $('#port-table').DataTable({
+      initComplete: function () {
+          this.api()
+              .columns()
+              .every(function () {
+                  var that = this;
+                  $('input', this.footer()).on('keyup change clear', function () {
+                      if (that.search() !== this.value) {
+                          that.search(this.value).draw();
+                      }
+                  });
+              });
+      },
+  });
 });
