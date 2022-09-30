@@ -90,7 +90,6 @@
     </div>
   </div>
 </div>
-<div class="container">
 <table class="table port-table" id="port-table">
   <thead>
     <tr>
@@ -100,6 +99,7 @@
       <th scope="col"><span class="table-column"> Latitude <i class="caret"></span></th>
       <th scope="col"><span class="table-column"> Longitude <i class="caret"></span></th>
       <th scope="col"><span class="table-column"> Date <i class="caret"></span></th>
+      <th scope="col"><span class="table-column"> Action <i class="caret"></span></th>
     </tr>
   </thead>
   <tbody id="port-table-body">
@@ -111,6 +111,13 @@
       <td>{{ port.latitude }}</td>
       <td>{{ port.longitude }}</td>
       <td>{{ port.date }}</td>
+      <td>
+        <a class="action" href="{% url 'edit_port' id=port.id %}" title="Edit port"><i
+          class="fa-solid fa-pen-to-square fa-lg" style="color: blueviolet"></i></a>
+        <a class="action" onclick="return confirm('Are you sure? Do you want to Delete port {{ port.name }}?')"
+          href="{% url 'del_port' id=port.id %}" title="Delete port"><i class="fa-solid fa-trash-can fa-lg"
+            style="color: red"></i></a>
+      </td>
     </tr>
     {% endfor %}
   </tbody>
@@ -122,10 +129,11 @@
       <th scope="col"><span class="table-column"> Latitude <i class="caret"></span></th>
       <th scope="col"><span class="table-column"> Longitude <i class="caret"></span></th>
       <th scope="col"><span class="table-column"> Date <i class="caret"></span></th>
+      <th scope="col"><span class="table-column"> Action <i class="caret"></span></th>
+
     </tr>
   </tfoot>
 </table>
-</div>
 {% load static %}
 <script src="{% static 'script/port-table-script.js' %}"></script>
 

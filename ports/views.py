@@ -96,3 +96,17 @@ def upload_csv_page(request):
     if fine:
         return redirect(ports_view)
     return HttpResponseRedirect(reverse("upload_csv_page"))
+
+
+
+def edit_port(request,id):
+    return redirect(ports_view)
+
+
+def del_port(request,id):
+    try:
+        port = Port.objects.get(id=id)
+        port.delete()
+        return redirect(ports_view)
+    except:
+        return redirect(ports_view)
