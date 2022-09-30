@@ -171,3 +171,11 @@ search_input.addEventListener('keyup', function (event) {
 $(document).ready(function(){
 	setTimeout(function(){ clearArrow(); });
 });
+
+$(document).ready(function () {
+  $('#port-table tfoot th').each(function () {
+      var title = $(this).text();
+      $(this).html('<input type="text" placeholder="Search ' + title + '" />');
+  });
+
+});
