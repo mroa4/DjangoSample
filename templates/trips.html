@@ -1,0 +1,141 @@
+<!-- imolates/trips.html-->
+{% extends 'base.html' %}
+
+{% block title %}trips{% endblock %}
+
+{% block content %}
+
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
+
+{% if messages %}
+<div class="ctrl-panel2">
+  <h3> Something Went Wrong </h3>
+  {% for message in messages %}
+  {{ message }}
+  {% endfor %}
+</div>
+{% endif %}
+
+<div class="container" style="padding-bottom: 20px;">
+  <div class="btn-toolbar" role="toolbar">
+    <div class="btn-group btn-group-lg btn-group-justified btn-group-fill-height">
+      <button type="button" class="btn btn-default port-reg-button" data-bs-toggle="modal"
+        data-bs-target="#exampleModal" data-bs-whatever=""> <strong>Add new trip</strong>
+        <span>Same page</span> </button>
+      <a href="{% url 'add_trip_page' %}" class="btn btn-success port-reg-button" role="button">
+        <strong>Add new trip</strong>
+        <span>Other page</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add New trip</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        {% if messages %}
+        {% for message in messages %}
+        {{ message }}
+        {% endfor %}
+        {% endif %}
+        <form action="/add_trip" method="post">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="id_name" class="col-form-label">Vessel Name:</label>
+            <input type="text" class="form-control" name="name" maxlength="50" required="" id="id_name"
+              value="{{ trip_form.name }}">
+          </div>
+          <label for="id_imo" class="col-form-label">IMO:</label>
+          <div class="input-group mb-3">
+            <input type="number" class="form-control" name="imo" maxlength="10" required="" id="id_imo"
+              value="{{ trip_form.imo }}">
+          </div>
+          <div class="mb-3">
+            <label for="id_trip_date" class="col-form-label">Date:</label>
+            <input type="date" class="form-control" name="trip_date" maxlength="10" required="" id="id_trip_date"
+              value="{{ trip_form.trip_date }}">
+          </div>
+          <div class="mb-3">
+            <label for="id_origin_port" class="col-form-label">Origin:</label>
+            <input type="text" class="form-control" name="origin_port" maxlength="50" required="" id="id_origin_port"
+              value="{{ trip_form.origin_port }}">
+          </div> 
+          <div class="mb-3">
+            <label for="id_dest_port" class="col-form-label">Destination:</label>
+            <input type="text" class="form-control" name="dest_port" maxlength="50" required="" id="id_dest_port"
+              value="{{ trip_form.dest_port }}">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary" value="Submit">Submit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<table class="table trip-table" id="trip-table">
+  <thead>
+    <tr>
+      <th scope="col"><span class="table-column"> PID <i class="caret"></span></th>
+      <th scope="col"><span class="table-column"> trip Name <i class="caret"></span></th>
+      <th scope="col"><span class="table-column"> IMO <i class="caret"></span></th>
+      <th scope="col"><span class="table-column"> Origin <i class="caret"></span></th>
+      <th scope="col"><span class="table-column"> Destination <i class="caret"></span></th>
+      <th scope="col"><span class="table-column"> Trip Date <i class="caret"></span></th>
+      <th scope="col"><span class="table-column"> Create Date <i class="caret"></span></th>
+      <th scope="col"><span class="table-column"> Action <i class="caret"></span></th>
+    </tr>
+  </thead>
+  <tbody id="trip-table-body">
+    {% for trip in trips %}
+    <tr>
+      <th scope="row">{{ trip.id }}</th>
+      <td>{{ trip.name }}</td>
+      <td>{{ trip.imo }}</td>
+      <td>{{ trip.origin_port }}</td>
+      <td>{{ trip.dest_port }}<t/d>
+      <td>{{ trip.trip_date }}</td>
+      <td>{{ trip.date }}</td>
+
+      <td>
+        <a class="action" href="{% url 'edit_trip' id=trip.id %}" title="Edit trip"><i
+          class="fa-solid fa-pen-to-square fa-lg" style="color: blueviolet"></i></a>
+        <a class="action" onclick="return confirm('Are you sure? Do you want to Delete trip {{ trip.name }}?')"
+          href="{% url 'del_trip' id=trip.id %}" title="Delete trip"><i class="fa-solid fa-trash-can fa-lg"
+            style="color: red"></i></a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+  <tfoot>
+    <tr>
+      <th scope="col"><span class="table-column"> PID <i class="caret"></span></th>
+      <th scope="col"><span class="table-column"> trip Name <i class="caret"></span></th>
+      <th scope="col"><span class="table-column"> IMO <i class="caret"></span></th>
+      <th scope="col"><span class="table-column"> Origin <i class="caret"></span></th>
+      <th scope="col"><span class="table-column"> Destination <i class="caret"></span></th>
+      <th scope="col"><span class="table-column"> Trip Date <i class="caret"></span></th>
+      <th scope="col"><span class="table-column"> Create Date <i class="caret"></span></th>
+      <th scope="col"><span class="table-column"> Action <i class="caret"></span></th>
+    </tr>
+  </tfoot>
+</table>
+
+{% endblock %}
+{% block script %}
+{% load static %}
+<script src="{% static 'script/trip-table-script.js' %}"></script>
+
+{% endblock %}
+
+

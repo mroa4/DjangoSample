@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+  {% load static %}
+  <link href="{% static 'css/edit-style.css' %}" type="text/css" rel="stylesheet">
+
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css'
+    crossorigin="anonymous">
+  <link href="{% static 'css/style.css' %}" type="text/css" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/b5bc6a9427.js" crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+  <title>{% block title %}Add Port{% endblock %}</title>
+</head>
+
+{% if messages %}
+<div class="ctrl-panel2">
+  <h3> Something Went Wrong </h3>
+  {% for message in messages %}
+  {{ message }}
+  {% endfor %}
+</div>
+{% endif %}
+
+<form action="/add_port_page" method="post">
+  {% csrf_token %}
+  <div class="group">
+      <input type="text" class="form-control" name="name" maxlength="50" required="" id="id_name"
+          value="{{ port_form.name }}"> <span class="highlight"></span><span class="bar"></span>
+      <label for="id_name"> Name:</label>
+  </div>
+  <div class="group">
+      <input type="text" class="form-control" name="imo" maxlength="10" required="" id="id_imo"
+          value="{{ port_form.imo }}"> <span class="highlight"></span><span class="bar"></span>
+      <label for="id_imo"> IMO:</label>
+  </div>
+  <div class="group">
+      <input type="trip_date" class="form-control" name="trip_date" maxlength="100" required="" id="id_trip_date"
+          value="{{ port_form.trip_date }}"><span class="highlight"></span><span class="bar"></span>
+      <label for="id_trip_date"> Trip Date:</label>
+  </div>
+  <div class="group">
+    <input type="origin_port" class="form-control" name="origin_port" maxlength="100" required="" id="id_origin_port"
+        value="{{ port_form.origin_port }}"><span class="highlight"></span><span class="bar"></span>
+    <label for="id_origin_port"> Origin:</label>
+  </div>
+  <div class="group">
+    <input type="dest_port" class="form-control" name="dest_port" maxlength="100" required="" id="id_dest_port"
+        value="{{ port_form.dest_port }}"><span class="highlight"></span><span class="bar"></span>
+    <label for="id_dest_port"> Destination:</label>
+  </div>
+  <div class="d-grid gap-2">
+      <button type="submit" class="btn btn-danger" value="Submit">Submit</button>
+      <button type="button" onclick="history.back()" class="btn btn-secondary" data-bs-dismiss="modal">Back</button>
+    </div>
+
+
+</form>
+
+{% block script %}
+
+<script src="{% static 'script/edit-port-script.js' %}"></script>
+
+{% load static %}
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+crossorigin="anonymous"></script>
+
+{% endblock %}
+
+<!-- <script type="text/javascript">window.$crisp = []; window.CRISP_WEBSITE_ID = "";
+(function () {
+  d = document; s = d.createElement("script");
+  s.src = "https://client.crisp.chat/l.js"; s.async = 1;
+  d.getElementsByTagName("head")[0].appendChild(s);
+})();
+</script> -->
+
+</body>
+
+</html>
