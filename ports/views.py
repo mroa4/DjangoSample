@@ -135,8 +135,9 @@ def del_port(request,id):
 
 def get_trips_view(request):
     trips = Trip.objects.all()
-    return render(request, 'trips.html', {
-        'trips': trips
+    ports = Port.objects.all()
+    return render(request, template_name='trips.html', context={
+        'trips': trips, 'ports': ports
     })
 
 

@@ -9,6 +9,8 @@
 
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js" integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css" integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" crossorigin="anonymous" />
 
 {% if messages %}
 <div class="ctrl-panel2">
@@ -66,14 +68,25 @@
           </div>
           <div class="mb-3">
             <label for="id_origin_port" class="col-form-label">Origin:</label>
-            <input type="text" class="form-control" name="origin_port" maxlength="50" required="" id="id_origin_port"
-              value="{{ trip_form.origin_port }}">
-          </div> 
+            <select  name="origin_port" id="id_origin_port">
+              {% for port in ports %}
+              <option value="{{ port.id }}">{{ port.name }}</option>
+              {% endfor %}
+            <select>
+          </div>
           <div class="mb-3">
+            <label for="id_dest_port" class="col-form-label">Destination:</label>
+            <select  name="dest_port" id="id_dest_port">
+              {% for port in ports %}
+              <option value="{{ port.id }}">{{ port.name }}</option>
+              {% endfor %}
+            <select>
+          </div>
+          <!-- <div class="mb-3">
             <label for="id_dest_port" class="col-form-label">Destination:</label>
             <input type="text" class="form-control" name="dest_port" maxlength="50" required="" id="id_dest_port"
               value="{{ trip_form.dest_port }}">
-          </div>
+          </div> -->
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             <button type="submit" class="btn btn-primary" value="Submit">Submit</button>
@@ -93,7 +106,6 @@
       <th scope="col"><span class="table-column"> Destination <i class="caret"></span></th>
       <th scope="col"><span class="table-column"> Trip Date <i class="caret"></span></th>
       <th scope="col"><span class="table-column"> Create Date <i class="caret"></span></th>
-      <th scope="col"><span class="table-column"> Action <i class="caret"></span></th>
     </tr>
   </thead>
   <tbody id="trip-table-body">
@@ -102,19 +114,10 @@
       <th scope="row">{{ trip.id }}</th>
       <td>{{ trip.name }}</td>
       <td>{{ trip.imo }}</td>
-      <td>{{ trip.origin_port }}</td>
-      <td>{{ trip.dest_port }}<t/d>
+      <td>{{ trip.origin_port.name }}</td>
+      <td>{{ trip.dest_port.name }}<t/d>
       <td>{{ trip.trip_date }}</td>
-      <td>{{ trip.date }}</td>
-
-      <td>
-        <a class="action" href="{% url 'edit_trip' id=trip.id %}" title="Edit trip"><i
-          class="fa-solid fa-pen-to-square fa-lg" style="color: blueviolet"></i></a>
-        <a class="action" onclick="return confirm('Are you sure? Do you want to Delete trip {{ trip.name }}?')"
-          href="{% url 'del_trip' id=trip.id %}" title="Delete trip"><i class="fa-solid fa-trash-can fa-lg"
-            style="color: red"></i></a>
-      </td>
-    </tr>
+      <td>{{ trip.submit_date }}</td>
     {% endfor %}
   </tbody>
   <tfoot>
@@ -126,7 +129,6 @@
       <th scope="col"><span class="table-column"> Destination <i class="caret"></span></th>
       <th scope="col"><span class="table-column"> Trip Date <i class="caret"></span></th>
       <th scope="col"><span class="table-column"> Create Date <i class="caret"></span></th>
-      <th scope="col"><span class="table-column"> Action <i class="caret"></span></th>
     </tr>
   </tfoot>
 </table>
