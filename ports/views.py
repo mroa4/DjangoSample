@@ -1,16 +1,17 @@
 from distutils.log import error
 from logging import exception
 from django.shortcuts import render, redirect
-from ports.models import Port
-from ports.forms import PortForm
+from ports.models import Port, Trip
+from ports.forms import PortForm, TripForm
 from django.contrib import messages
 from django.urls import reverse
 
 from django.http import HttpResponse, HttpResponseRedirect
 
+def get_home_view(request):
+    return render(request, template_name='home.html')
 
-# Create your views here.
-
+######## PORTS
 
 def get_ports_view(request):
     ports = Port.objects.all()
@@ -129,3 +130,79 @@ def del_port(request,id):
         return redirect(get_ports_view)
     except:
         return redirect(get_ports_view)
+
+######## TRIPS
+
+def get_trips_view(request):
+    trips = Trip.objects.all()
+    return render(request, 'trips.html', {
+        'trips': trips
+    })
+
+
+def add_trip_page(request):
+    if request.method == 'GET':
+        form = TripForm()
+    else:
+        form = TripForm(request.POST)
+        if form.is_valid():
+            trip = form.save()
+            trip.save()
+            return redirect(get_trips_view)
+        else:
+            messages.error(request, form.errors)
+            #  TODO add error to event
+
+            return render(request, template_name='add_trip_page.html', context={'trip_form': form.cleaned_data})
+
+    return render(request, template_name='add_trip_page.html')
+
+
+def add_trip_view(request):
+    trips = Trip.objects.all()
+    if request.method == 'GET':
+        form = TripForm()
+    else:
+        form = TripForm(request.POST)
+        if form.is_valid():
+            trip = form.save()
+            trip.save()
+        else:
+            messages.error(request, form.errors)
+
+            return render(request, template_name='trips.html', context={'trips': trips, 'trip_form': form.cleaned_data})
+
+    return render(request, template_name='trips.html', context={'trips': trips, 'trip_form': form.cleaned_data})
+
+
+def edit_trip(request,id):
+    trip = Trip.objects.get(pk=id)
+
+    if request.method == 'GET':
+            form = TripForm(instance=Trip(trip))
+            return render(request, template_name='edit_trip.html', context={'trip':trip, 'trip_form': form})
+    else:
+        # try:
+        form = TripForm(request.POST, instance=trip)
+        if form.is_valid():
+            tform = form.save(commit=False)
+            trip = form.save()
+            trip.save()
+            return redirect(get_trips_view)
+        else:
+            messages.error(request, form.errors)
+            return render(request, template_name='edit_trip.html', context={'trip':trip, 'trip_form': form.data})
+        # except:
+        #     return redirect(get_trips_view)
+
+    return redirect(get_trips_view)
+
+
+
+def del_trip(request,id):
+    try:
+        trip = Trip.objects.get(id=id)
+        trip.delete()
+        return redirect(get_trips_view)
+    except:
+        return redirect(get_trips_view)
