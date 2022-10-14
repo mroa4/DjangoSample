@@ -14,4 +14,6 @@ urlpatterns = [
     path('add_trip_page', views.add_trip_page, name='add_trip_page'),
     path('edit_trip/<int:id>', views.edit_trip, name='edit_trip'),
     path('del_trip/<int:id>', views.del_trip, name='del_trip'),
+    path('plots', views.get_plot_view, name='plots'),
+
 ]

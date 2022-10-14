@@ -36,10 +36,11 @@
         <li class="nav-item {% if 'trips' in request.path %} active{% endif %}">
           <a class="nav-link" href="{% url 'trips' %}"><i class="fa-solid fa-ship"></i>Trips</a>
         </li>
-
+        <li class="nav-item {% if 'plots' in request.path %} active{% endif %}">
+          <a class="nav-link" href="{% url 'plots' %}"><i class="fa-solid fa-chart-simple"></i>Plots</a>
+        </li>
       </ul>
     </div>
-
 
   </nav>
   <main>

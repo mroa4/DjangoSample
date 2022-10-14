@@ -5,6 +5,7 @@ from ports.models import Port, Trip
 from ports.forms import PortForm, TripForm
 from django.contrib import messages
 from django.urls import reverse
+from django.db.models import Count
 
 from django.http import HttpResponse, HttpResponseRedirect
 
@@ -142,6 +143,7 @@ def get_trips_view(request):
 
 
 def add_trip_page(request):
+    ports = Port.objects.all()
     if request.method == 'GET':
         form = TripForm()
     else:
@@ -154,13 +156,14 @@ def add_trip_page(request):
             messages.error(request, form.errors)
             #  TODO add error to event
 
-            return render(request, template_name='add_trip_page.html', context={'trip_form': form.cleaned_data})
+            return render(request, template_name='add_trip_page.html', context={'trip_form': form.cleaned_data, 'ports': ports})
 
     return render(request, template_name='add_trip_page.html')
 
 
 def add_trip_view(request):
     trips = Trip.objects.all()
+    ports = Port.objects.all()
     if request.method == 'GET':
         form = TripForm()
     else:
@@ -171,9 +174,9 @@ def add_trip_view(request):
         else:
             messages.error(request, form.errors)
 
-            return render(request, template_name='trips.html', context={'trips': trips, 'trip_form': form.cleaned_data})
+            return render(request, template_name='trips.html', context={'trips': trips, 'trip_form': form.cleaned_data, 'ports': ports})
 
-    return render(request, template_name='trips.html', context={'trips': trips, 'trip_form': form.cleaned_data})
+    return render(request, template_name='trips.html', context={'trips': trips, 'trip_form': form.cleaned_data, 'ports': ports})
 
 
 def edit_trip(request,id):
@@ -207,3 +210,15 @@ def del_trip(request,id):
         return redirect(get_trips_view)
     except:
         return redirect(get_trips_view)
+
+
+################
+import json
+def get_plot_view(request):
+    # trips = Trip.objects.all()
+    # ports = Port.objects.all()
+    counts = Port.objects.annotate(origin_port_c=Count('origin', distinct=True), dest_port_c=Count('destination', distinct=True))
+    # counts = json.dumps(counts)
+    return render(request, template_name='plots.html', context={
+        'counts':counts
+    })

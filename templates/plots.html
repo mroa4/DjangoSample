@@ -1,0 +1,45 @@
+<!-- imolates/trips.html-->
+{% extends 'base.html' %}
+
+{% block title %}trips{% endblock %}
+
+{% block content %}
+
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js" integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css" integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" crossorigin="anonymous" />
+
+{% if messages %}
+<div class="ctrl-panel2">
+  <h3> Something Went Wrong </h3>
+  {% for message in messages %}
+  {{ message }}
+  {% endfor %}
+</div>
+{% endif %}
+
+{% for port in counts %}
+Name: {{port.name}}
+    <br>
+    Count Origin: {{port.origin_port_c}}
+    <br>
+    Count Dest: {{port.dest_port_c}}
+    <br><br>
+{% endfor %}
+
+{% counts %}
+<canvas id="chart"></canvas>
+{% endblock %}
+{% block script %}
+{% load static %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+
+</script>
+<script src="{% static 'script/plot-script.js' %}"></script>
+
+{% endblock %}
+
+
